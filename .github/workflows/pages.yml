@@ -30,6 +30,8 @@ jobs:
       - run: npm run build
         env:
           PAGE_URL: ${{ steps.pages.outputs.base_url }}
+          ENROLLMENT_ALERT_ENDPOINT: ${{ vars.ENROLLMENT_ALERT_ENDPOINT }}
+          ENROLLMENT_ALERT_PRIVACY_URL: ${{ vars.ENROLLMENT_ALERT_PRIVACY_URL }}
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

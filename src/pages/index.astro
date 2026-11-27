@@ -1,39 +1,136 @@
 ---
 import Site from '../layouts/Site.astro';
 import courses from '../data/cursos.json';
-const url=(c)=>'cursos/'+c.slug+'/';
-const next=courses.find(c=>c.end>=new Date().toISOString().slice(0,10));
-const guide=[{c:courses[0],label:'Básico e intermedio',text:'Manejo del ecógrafo y exploración sistemática de las extremidades.'},{c:courses[3],label:'Nivel III',text:'Sigue el recorrido de los nervios con la sonda y observa cómo cambian la pared abdominal y la región inguinal cuando el paciente se mueve.'},{c:courses[4],label:'Neuroeje y complejo craneomandibular',text:'Exploración de la articulación temporomandibular, la columna y la región sacropélvica.'}];
+
+const url = (course) => 'cursos/' + course.slug + '/';
+const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Madrid' }).format(new Date());
+const nextIndex = courses.findIndex(course => course.end >= today);
+const next = courses[nextIndex];
+const enrollmentPortal = 'https://www.titulacionespropias.uma.es/';
+const alertEndpoint = process.env.ENROLLMENT_ALERT_ENDPOINT;
+const privacyUrl = process.env.ENROLLMENT_ALERT_PRIVACY_URL;
+const alertsEnabled = alertEndpoint?.startsWith('https://') && privacyUrl?.startsWith('https://');
+
+const guide = [
+  {
+    course: courses[0],
+    level: 'Niveles I y II',
+    label: 'Básico e intermedio',
+    text: 'Gana autonomía con la sonda. Aprende a optimizar la imagen y a explorar de forma sistemática el miembro superior e inferior con supervisión docente.',
+  },
+  {
+    course: courses[3],
+    level: 'Nivel III',
+    label: 'Avanzado',
+    text: 'Si ya manejas la exploración básica, sigue el recorrido de los nervios con la sonda y observa qué cambia en la pared abdominal y la región inguinal con el movimiento.',
+  },
+  {
+    course: courses[4],
+    level: 'Nivel IV',
+    label: 'Neuroeje y complejo craneomandibular',
+    text: 'Amplía tu exploración ecográfica a la articulación temporomandibular, el raquis y la región sacropélvica.',
+  },
+];
+
+const agenda = [
+  { title: 'Ecografía musculoesquelética · Niveles I y II', benefit: 'Gana soltura con el ecógrafo y practica la exploración sistemática de las extremidades.' },
+  { title: 'Neuromodulación percutánea sin ecoguía', benefit: 'Aplica la anatomía y el razonamiento clínico al abordaje del sistema nervioso periférico.' },
+  { title: 'Restricción de flujo sanguíneo (BFR)', benefit: 'Practica la medición de la presión de oclusión y valora el uso del BFR en distintos contextos de rehabilitación.', mode: 'Semipresencial' },
+  { title: 'Ecografía avanzada · Nivel III', benefit: 'Rastrea trayectos nerviosos complejos y explora la pared abdominal y la región inguinal en movimiento.' },
+  { title: 'Ecografía del neuroeje · Nivel IV', benefit: 'Practica la exploración ecográfica del complejo craneomandibular, la columna y la región sacropélvica.' },
+];
 ---
-<Site title="Formación universitaria para la práctica clínica" description="Formación de fisioterapia en Málaga. Consulta los programas, compara niveles de ecografía y revisa requisitos y fechas de la Universidad de Málaga.">
+
+<Site title="Rigor universitario aplicado a la práctica clínica real" description="Formación práctica en fisioterapia impartida por la Universidad de Málaga. Consulta los programas, niveles de ecografía y fechas de 2027.">
   <section class="hero">
     <div class="intro">
-      <p class="location">Málaga <span> / </span> Curso 2027</p>
-      <h1>Formación universitaria para la práctica clínica</h1>
-      <p class="lead">Práctica supervisada para fisioterapeutas y profesionales sanitarios en cursos impartidos por la Universidad de Málaga.</p>
-      <a class="button" href="#calendario">Ver calendario 2027</a>
+      <p class="location">Facultad de Ciencias de la Salud · Universidad de Málaga · Edición 2027</p>
+      <h1>Rigor universitario aplicado a la práctica clínica real</h1>
+      <p class="lead">La UMA imparte estos programas con práctica guiada para fisioterapeutas, alumnado de 4.º de Fisioterapia y, según el curso, otros profesionales sanitarios.</p>
+      <div class="hero-actions">
+        <a class="button" href="#calendario">Ver calendario 2027</a>
+        <a href="#matricula">{alertsEnabled ? 'Avísame cuando abra la matrícula' : 'Consultar la matrícula'}</a>
+      </div>
     </div>
     {next && <a class="feature" href={url(next)}>
       <div class="scan" aria-hidden="true"><i></i><b></b></div>
-      <small>Próxima formación</small>
+      <small>{nextIndex + 1}.ª convocatoria de 2027 · Plazas limitadas</small>
       <div class="feature-info">
         <div class="stamp">{next.days} <span>{next.month} 2027</span></div>
-        <div class="feature-name">{next.short}</div>
+        <div class="feature-name">{agenda[nextIndex].title}</div>
       </div>
     </a>}
   </section>
+
   <section id="calendario">
     <div class="section-head"><h2>Calendario 2027</h2><p>Facultad de Ciencias de la Salud · Málaga</p></div>
-    <div class="agenda">{courses.map(c=><a href={url(c)}>
-      <div class="date">{c.days}<small>{c.month}</small></div>
-      <div class="entry"><h3>{c.short}</h3><span>{c.mode}</span></div>
-      <span class="price">{c.price} <small>previstos</small></span>
+    <div class="agenda">{courses.map((course, index) => <a href={url(course)}>
+      <div class="date">{course.days}<small>{course.month}</small></div>
+      <div class="entry">
+        <h3>{agenda[index].title}</h3>
+        <p>{agenda[index].benefit}</p>
+        <span>{agenda[index].mode ?? course.mode}</span>
+      </div>
+      <span class="price">{course.price} <small>previstos</small></span>
     </a>)}</div>
   </section>
-  <section id="ecografia"><h2>Qué curso de ecografía elegir</h2>
-    <div class="guide">{guide.map(g=><article><h3>{g.label}</h3><p>{g.text}</p><a href={url(g.c)+'#acceso'} aria-label={'Consultar requisitos de '+g.label}>Consultar requisitos</a></article>)}</div>
+
+  <section id="ecografia">
+    <h2>Itinerario de ecografía UMA</h2>
+    <p class="section-intro">Elige tu punto de partida según tu experiencia con la sonda.</p>
+    <div class="guide">{guide.map(({ course, level, label, text }) => <article>
+      <p class="level">{level} · {course.month}</p>
+      <h3>{label}</h3>
+      <p>{text}</p>
+      <a href={url(course)} aria-label={'Ver programa y requisitos de ' + label}>Ver programa y requisitos</a>
+    </article>)}</div>
   </section>
-  <section id="equipo"><div><h2>Cómo se aprende en el aula</h2><p>La práctica guiada combina exploración, observación y discusión de casos. Cada programa detalla los ejercicios previstos y las competencias que se trabajan.</p></div>
-    <div class="faculty"><h3>Equipo docente</h3><p><strong>Manuel González Sánchez</strong>Dirección y docencia</p><p><strong>Francisco José Extremera García</strong>Docencia</p><p>La Universidad de Málaga imparte los cursos y expide las credenciales correspondientes.</p></div>
+
+  <section id="metodologia">
+    <p class="location">Metodología</p>
+    <h2>Aprender haciendo, del fundamento científico a la camilla</h2>
+    <div class="editorial-grid">
+      <article><h3>Práctica supervisada en el aula</h3><p>Practica exploración, manejo del equipo o razonamiento sobre casos, según el programa, con la orientación del equipo docente.</p></article>
+      <article><h3>Credenciales de la UMA</h3><p>La Universidad de Málaga imparte los cursos y expide las microcredenciales y los títulos que corresponden a cada formación.</p></article>
+      <article><h3>Información antes de inscribirte</h3><p>Consulta las actividades previstas, el nivel de partida y los requisitos de acceso de cada curso antes de elegir.</p></article>
+    </div>
+  </section>
+
+  <section id="equipo" class="team">
+    <h2>Dirección académica y clínica</h2>
+    <div class="editorial-grid">
+      <article>
+        <h3>Dr. Manuel González Sánchez</h3>
+        <p class="role">Dirección académica y docencia</p>
+        <p>Catedrático en Ciencias de la Salud de la Universidad de Málaga. Dirige las formaciones y coordina su propuesta académica en la UMA.</p>
+      </article>
+      <article>
+        <h3>Francisco José Extremera García</h3>
+        <p class="role">Coordinación clínica y docencia</p>
+        <p>Fisioterapeuta y osteópata D.O., especialista en fisioterapia invasiva y terapia fascial manipulativa. Diseña la práctica aplicada para trasladar lo aprendido a consulta.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="matricula" class="enrollment">
+    <div>
+      <h2>{alertsEnabled ? '¿Quieres saber cuándo abre la matrícula?' : 'Consulta las convocatorias de 2027'}</h2>
+      <p>{alertsEnabled
+        ? 'Déjanos tu correo y te avisaremos cuando se habilite la matrícula en la Universidad de Málaga.'
+        : 'Comprueba el estado de inscripción en el portal de la Universidad de Málaga. En cada ficha encontrarás el código del curso y sus plazos previstos.'}</p>
+    </div>
+    {alertsEnabled ? <form method="post" action={alertEndpoint}>
+      <label for="alert-email">Tu correo electrónico</label>
+      <input id="alert-email" name="email" type="email" autocomplete="email" required />
+      <label for="alert-profile">Tu perfil</label>
+      <select id="alert-profile" name="profile" required>
+        <option value="" disabled selected>Selecciona tu perfil</option>
+        <option value="fisioterapeuta">Soy fisioterapeuta</option>
+        <option value="estudiante-uma">Soy estudiante de Fisioterapia de la UMA</option>
+        <option value="otro">Otro perfil</option>
+      </select>
+      <p><a href={privacyUrl}>Información sobre el uso de tus datos</a></p>
+      <button type="submit" class="button">Recibir aviso de matrícula</button>
+    </form> : <a class="button" href={enrollmentPortal}>Consultar en la UMA</a>}
   </section>
 </Site>
