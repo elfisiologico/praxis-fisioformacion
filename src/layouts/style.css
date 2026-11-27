@@ -1,5 +1,5 @@
 :root {
-  --ink:#16232b; --paper:#fef2da; --accent:#f86e41; --line:#c6cbc9;
+  --ink:#16232b; --paper:#fef2da; --accent:#f86e42; --line:#c6cbc9;
   --margin:max(clamp(18px,5vw,72px),calc((100% - 1220px)/2));
   font-family:'Manrope Variable',sans-serif; color:var(--ink); background:white;
 }
@@ -11,9 +11,10 @@ a:focus-visible,summary:focus-visible {outline:3px solid #1678bd;outline-offset:
 .skip:focus {left:1rem;background:white;padding:1rem;z-index:10}
 header,footer,main>section {padding-inline:var(--margin)}
 header,footer,.wide-nav,.section-head,.feature-name,.button {display:flex;align-items:center;justify-content:space-between}
-header {position:relative;z-index:2;padding-block:17px;background:var(--paper);border-bottom:1px solid #16232b30}
+header {position:relative;z-index:2;padding-block:8px;background:var(--accent)}
 .corporate-logo {display:block;width:220px;height:64px;object-fit:cover;object-position:50% 53%;max-width:100%}
-footer .corporate-logo {width:190px;height:58px}
+.brand,footer a:first-child {margin-inline-start:-23px}
+footer .corporate-logo {width:220px;height:64px}
 .wide-nav {gap:clamp(18px,3vw,48px)}
 nav a,summary,.back,.download,.guide a {display:inline-flex;align-items:center;min-height:44px;font-weight:700}
 nav a {text-decoration:none}
@@ -21,10 +22,10 @@ nav a:hover,.agenda a:hover h3,.feature:hover .feature-name {text-decoration:und
 .mobile-menu {display:none}
 summary {cursor:pointer}
 main>section {padding-block:clamp(38px,6vw,88px)}
-.hero {background:var(--paper);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,88px);align-items:center}
+.hero {background:var(--paper);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,88px);align-items:center;padding-block:clamp(34px,4.4vw,68px)}
 h1,h2,h3,p {margin:0}
 h1,h2,h3 {text-wrap:balance}
-h1 {font-size:clamp(2.85rem,5.2vw,5rem);letter-spacing:-.065em;line-height:1.025}
+h1 {font-size:clamp(2.85rem,5.2vw,5rem);letter-spacing:-.054em;line-height:1.055}
 h2 {font-size:clamp(2rem,3.8vw,3.5rem);letter-spacing:-.055em;line-height:1.1}
 h3 {font-size:clamp(1.22rem,2vw,1.65rem);line-height:1.2;letter-spacing:-.035em}
 p,li {line-height:1.6}
@@ -44,26 +45,30 @@ p,li {line-height:1.6}
 .feature-name {border-top:1px solid #ffffff55;margin-top:1.3rem;padding-top:1rem;gap:1rem;font-size:clamp(1.18rem,1.6vw,1.6rem);font-weight:700}
 .section-head {align-items:end;gap:1rem;margin-bottom:1.75rem}
 .section-head p,.entry span,.price small,.date small {font-size:.9rem}
-.agenda a {display:grid;grid-template-columns:minmax(90px,.55fr) minmax(0,3fr) auto auto;align-items:center;gap:clamp(12px,3vw,48px);padding:1.15rem .4rem;border-top:1px solid var(--line);text-decoration:none}
+.agenda a {display:grid;grid-template-columns:minmax(90px,.55fr) minmax(0,3fr) auto auto;align-items:center;gap:clamp(12px,3vw,48px);padding:1.15rem 0;border-top:1px solid var(--line);text-decoration:none}
 .agenda a:last-child {border-bottom:1px solid var(--line)}
 .agenda a:hover {background:#fff9ee}
 .date {font-size:clamp(1.4rem,2.4vw,2rem);font-weight:750;letter-spacing:-.04em;line-height:1.2}
 .date small,.price small {display:block;font-weight:500;letter-spacing:0}
 .entry span {display:block;margin-top:.4rem}
-.price {font-weight:700}
+.price {font-weight:700;font-variant-numeric:tabular-nums}
+.date,.stamp {font-variant-numeric:tabular-nums}
 .arrow {font-size:1.4rem}
 #ecografia {background:var(--ink);color:var(--paper)}
 .guide {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,46px);margin-top:2rem}
 .guide article {display:flex;flex-direction:column;border-top:1px solid #adb3af;padding-top:1.1rem}
 .guide p {margin-block:.8rem}
 .guide a {margin-top:auto;color:var(--accent);gap:.65em}
-#equipo {display:grid;grid-template-columns:1fr 1fr;gap:7%}
+#equipo {display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:clamp(24px,5vw,88px)}
 #equipo p {margin-top:1rem;max-width:49ch}
 .faculty strong {display:block}
 .faculty p+p {border-top:1px solid var(--line);padding-top:.7rem}
-footer {background:var(--ink);color:white;padding-block:2rem;gap:1rem;flex-wrap:wrap}
-footer a {padding-block:.35rem}
-.course {padding-top:1.5rem}
+footer {background:var(--accent);color:var(--ink);padding-block:1.25rem;gap:1rem;flex-wrap:wrap}
+footer a {display:inline-flex;align-items:center;min-height:44px}
+.course {padding-top:1.25rem}
+.course .lead {max-width:60ch}
+.program {max-width:70ch}
+.program h2:not(:first-child) {border-top:1px solid var(--line);padding-top:.85em}
 .back {margin-bottom:1.2rem}
 .course h1 {font-size:clamp(2rem,4.6vw,4.7rem);max-width:22ch;overflow-wrap:anywhere;hyphens:auto}
 .coursegrid {display:grid;grid-template-columns:minmax(250px,1fr) minmax(0,1.8fr);gap:clamp(24px,5vw,72px);align-items:start;margin-top:2rem}
@@ -78,8 +83,9 @@ footer a {padding-block:.35rem}
 .program :is(li,p) {margin-bottom:.65em}
 .program :is(ul,ol) {padding-inline-start:1.4em}
 @media(max-width:850px) {
-  header {padding-block:9px}
-  .brand .corporate-logo {width:176px;height:52px}
+  header {padding-block:5px}
+  .brand .corporate-logo,footer .corporate-logo {width:176px;height:52px}
+  .brand,footer a:first-child {margin-inline-start:-18px}
   .wide-nav {display:none}
   .mobile-menu {display:block}
   .mobile-menu summary {gap:.6em;list-style:none;padding-inline:.4rem}
