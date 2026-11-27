@@ -1,0 +1,8 @@
+---
+import '@fontsource-variable/manrope';
+import './style.css';
+const {title,description}=Astro.props;
+const base=import.meta.env.BASE_URL.replace(/\/$/,'')+'/';
+const canonical=new URL(Astro.url.pathname,Astro.site);
+---
+<!doctype html><html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title} · Praxis Fisioformación</title><meta name="description" content={description}/><link rel="canonical" href={canonical}/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={canonical}/><meta property="og:image" content={new URL(base+'media/praxis.png',Astro.site)}/><link rel="icon" href={base+'media/praxis.png'}/></head><body><a class="skip" href="#principal">Saltar al contenido</a><header><a class="brand" href={base}><img src={base+'media/praxis.png'} width="40" height="40" alt=""/>Praxis <small>Fisioformación</small></a><nav aria-label="Principal"><a href={base+'#calendario'}>Cursos</a><a href={base+'#ecografia'}>Guía de ecografía</a><a href={base+'#equipo'}>Equipo</a></nav></header><main id="principal"><slot/></main><footer><strong>Praxis Fisioformación</strong><a href={base+'#calendario'}>Calendario de formación</a></footer></body></html>
