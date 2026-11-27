@@ -7,6 +7,7 @@ on:
     - cron: '10 3 * * *'
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 concurrency:
@@ -35,5 +36,18 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
+      - name: Esperar a que GitHub registre el artefacto
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in {1..12}; do
+            if gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts" \
+              --jq '.artifacts[] | select(.name == "github-pages" and (.expired | not)) | .id' | grep -q .; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "::error::El artefacto de Pages todavía no aparece en GitHub Actions"
+          exit 1
       - id: deploy
         uses: actions/deploy-pages@v4
