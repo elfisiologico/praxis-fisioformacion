@@ -43,14 +43,13 @@ p,li {line-height:1.6}
 .feature-name {border-top:1px solid #ffffff55;margin-top:1.3rem;padding-top:1rem;gap:1rem;font-size:clamp(1.18rem,1.6vw,1.6rem);font-weight:700}
 .section-head {align-items:end;gap:1rem;margin-bottom:1.75rem}
 .section-head p,.entry span,.price small,.date small {font-size:.9rem}
-.agenda a {display:grid;grid-template-columns:minmax(90px,.55fr) minmax(0,3fr) auto auto;align-items:center;gap:clamp(12px,3vw,48px);padding:1.15rem 0;border-top:1px solid var(--line);text-decoration:none}
+.agenda a {display:grid;grid-template-columns:minmax(90px,.55fr) minmax(0,3fr) auto;align-items:center;gap:clamp(12px,3vw,48px);padding:1.15rem 0;border-top:1px solid var(--line);text-decoration:none}
 .agenda a:last-child {border-bottom:1px solid var(--line)}
 .date {font-size:clamp(1.4rem,2.4vw,2rem);font-weight:750;letter-spacing:-.04em;line-height:1.2}
 .date small,.price small {display:block;font-weight:500;letter-spacing:0}
 .entry span {display:block;margin-top:.4rem}
 .price {font-weight:700;font-variant-numeric:tabular-nums}
 .date,.stamp {font-variant-numeric:tabular-nums}
-.arrow {font-size:1.4rem}
 #ecografia {background:var(--ink);color:var(--paper)}
 .guide {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(18px,3vw,46px);margin-top:2rem}
 .guide article {display:flex;flex-direction:column;border-top:1px solid #adb3af;padding-top:1.1rem}
@@ -104,14 +103,12 @@ footer a {display:inline-flex;align-items:center;min-height:44px}
   .stamp {font-size:2.15rem}
   .stamp span {font-size:.78rem;margin-top:.3rem}
   .feature-name {display:block;border:0;border-left:1px solid #ffffff60;padding:0 0 0 14px;margin:0;font-size:1.04rem}
-  .feature-name span {margin-left:.4em}
   .scan {width:42%;top:-90%;opacity:.38}
   .section-head {margin-bottom:1rem}
-  .agenda a {grid-template-columns:64px 1fr auto;gap:4px 10px;padding:.95rem 0}
+  .agenda a {grid-template-columns:64px minmax(0,1fr);gap:4px 10px;padding:.95rem 0}
   .date {grid-row:span 2;align-self:start}
   .price {grid-column:2;font-weight:550;font-size:.85rem}
   .price small {display:inline;font-size:inherit}
-  .arrow {grid-column:3;grid-row:1 / span 2}
   .guide,#equipo,.coursegrid {grid-template-columns:1fr;gap:24px}
   .guide {margin-top:1.5rem}
   .guide p {margin:.45rem 0}
@@ -133,20 +130,20 @@ nav a:focus-visible,.agenda a:focus-visible h3,.feature:focus-visible .feature-n
 }
 
 @media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
-  .feature,.agenda a,.button,.guide article {transition:background-color 220ms ease,box-shadow 220ms ease,border-color 220ms ease}
+  .feature,.agenda a,.guide article {transition:background-color 220ms ease,box-shadow 220ms ease,border-color 220ms ease}
   .scan {transition:transform 520ms cubic-bezier(.2,.75,.25,1),opacity 320ms ease}
-  .feature .stamp,.feature-name span,.agenda .entry,.agenda .arrow,.button span,.guide a span {
+  .feature .stamp,.agenda .entry,.button,.guide a {
     transition:transform 240ms cubic-bezier(.2,.75,.25,1);
   }
-  .feature-name span,.guide a span,.button span {display:inline-block}
+  .button {transition-property:transform,box-shadow}
   .feature {transform:translateY(0);transition-property:transform,box-shadow,background-color}
   .feature:hover {transform:translateY(-4px);box-shadow:0 14px 28px #16232b26;background-color:#20333d}
   .feature:hover .scan {transform:rotate(29deg) scale(1.14);opacity:1}
   .feature:hover .stamp {transform:translateY(-4px)}
-  .feature:hover .feature-name span,.agenda a:hover .arrow,.guide a:hover span {transform:translate(3px,-3px)}
+  .guide a:hover {transform:translateY(-2px)}
   .agenda a:hover .entry {transform:translateX(6px)}
   .agenda a:hover {box-shadow:inset 3px 0 var(--accent)}
-  .button:hover span {transform:translateY(3px)}
+  .button:hover {transform:translateY(-2px)}
   .wide-nav a {position:relative}
   .wide-nav a::after {
     content:"";

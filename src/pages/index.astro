@@ -11,14 +11,14 @@ const guide=[{c:courses[0],label:'Básico e intermedio',text:'Manejo del ecógra
       <p class="location">Málaga <span> / </span> Curso 2027</p>
       <h1>Formación universitaria para la práctica clínica</h1>
       <p class="lead">Práctica supervisada para fisioterapeutas y profesionales sanitarios en cursos impartidos por la Universidad de Málaga.</p>
-      <a class="button" href="#calendario">Ver calendario 2027 <span aria-hidden="true">↓</span></a>
+      <a class="button" href="#calendario">Ver calendario 2027</a>
     </div>
     {next && <a class="feature" href={url(next)}>
       <div class="scan" aria-hidden="true"><i></i><b></b></div>
       <small>Próxima formación</small>
       <div class="feature-info">
         <div class="stamp">{next.days} <span>{next.month} 2027</span></div>
-        <div class="feature-name">{next.short}<span aria-hidden="true">↗</span></div>
+        <div class="feature-name">{next.short}</div>
       </div>
     </a>}
   </section>
@@ -27,11 +27,11 @@ const guide=[{c:courses[0],label:'Básico e intermedio',text:'Manejo del ecógra
     <div class="agenda">{courses.map(c=><a href={url(c)}>
       <div class="date">{c.days}<small>{c.month}</small></div>
       <div class="entry"><h3>{c.short}</h3><span>{c.mode}</span></div>
-      <span class="price">{c.price} <small>previstos</small></span><span class="arrow" aria-hidden="true">↗</span>
+      <span class="price">{c.price} <small>previstos</small></span>
     </a>)}</div>
   </section>
   <section id="ecografia"><h2>Qué curso de ecografía elegir</h2>
-    <div class="guide">{guide.map(g=><article><h3>{g.label}</h3><p>{g.text}</p><a href={url(g.c)+'#acceso'} aria-label={'Consultar requisitos de '+g.label}>Consultar requisitos <span aria-hidden="true">↗</span></a></article>)}</div>
+    <div class="guide">{guide.map(g=><article><h3>{g.label}</h3><p>{g.text}</p><a href={url(g.c)+'#acceso'} aria-label={'Consultar requisitos de '+g.label}>Consultar requisitos</a></article>)}</div>
   </section>
   <section id="equipo"><div><h2>Cómo se aprende en el aula</h2><p>La práctica guiada combina exploración, observación y discusión de casos. Cada programa detalla los ejercicios previstos y las competencias que se trabajan.</p></div>
     <div class="faculty"><h3>Equipo docente</h3><p><strong>Manuel González Sánchez</strong>Dirección y docencia</p><p><strong>Francisco José Extremera García</strong>Docencia</p><p>La Universidad de Málaga imparte los cursos y expide las credenciales correspondientes.</p></div>
