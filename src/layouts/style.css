@@ -12,7 +12,8 @@ a:focus-visible,summary:focus-visible {outline:3px solid #1678bd;outline-offset:
 header,footer,main>section {padding-inline:var(--margin)}
 header,footer,.wide-nav,.section-head,.feature-name,.button {display:flex;align-items:center;justify-content:space-between}
 header {position:relative;z-index:2;padding-block:17px;background:var(--paper);border-bottom:1px solid #16232b30}
-.brand img,footer img {display:block;max-width:100%;height:auto}
+.corporate-logo {display:block;width:220px;height:64px;object-fit:cover;object-position:50% 53%;max-width:100%}
+footer .corporate-logo {width:190px;height:58px}
 .wide-nav {gap:clamp(18px,3vw,48px)}
 nav a,summary,.back,.download,.guide a {display:inline-flex;align-items:center;min-height:44px;font-weight:700}
 nav a {text-decoration:none}
@@ -78,7 +79,7 @@ footer a {padding-block:.35rem}
 .program :is(ul,ol) {padding-inline-start:1.4em}
 @media(max-width:850px) {
   header {padding-block:9px}
-  .brand img {width:174px}
+  .brand .corporate-logo {width:176px;height:52px}
   .wide-nav {display:none}
   .mobile-menu {display:block}
   .mobile-menu summary {gap:.6em;list-style:none;padding-inline:.4rem}
