@@ -1,6 +1,10 @@
 ---
 import Site from '../layouts/Site.astro';
 import courses from '../data/cursos.json';
+import { calendarBase } from '../lib/calendar.js';
+
+const calendarUrl = new URL('calendario/praxis.ics', calendarBase(Astro.site));
+const appleCalendarUrl = calendarUrl.href.replace(/^https?:/, 'webcal:');
 
 const url = (course) => 'cursos/' + course.slug + '/';
 const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Madrid' }).format(new Date());
@@ -82,6 +86,22 @@ const agenda = [
       </div>
       <div class="agenda-end"><span class="price">{course.price} <small>previstos</small></span><span class="agenda-link">Ver ficha</span></div>
     </a>)}</div>
+    <div id="suscripcion-calendario" class="calendar-subscription">
+      <h3>Suscríbete al calendario de Praxis</h3>
+      <p>Reúne las clases y los plazos de las cinco formaciones. Los cambios publicados aparecerán cuando se sincronice tu agenda.</p>
+      <a class="button" href={appleCalendarUrl}>Suscribirme en Calendario de Apple</a>
+      <details>
+        <summary>Google Calendar y otras agendas</summary>
+        <p>En Google Calendar desde un ordenador, abre «Otros calendarios», elige «Desde URL» y pega este enlace.</p>
+        <label for="calendar-url">Enlace del calendario</label>
+        <div class="calendar-copy">
+          <input id="calendar-url" type="url" readonly value={calendarUrl.href} />
+          <button type="button" class="button" data-calendar-copy hidden>Copiar enlace</button>
+        </div>
+        <p id="calendar-copy-status" role="status"></p>
+        <a href="https://support.google.com/calendar/answer/37100?hl=es">Ayuda de Google Calendar</a>
+      </details>
+    </div>
   </section>
 
   <section id="ecografia">

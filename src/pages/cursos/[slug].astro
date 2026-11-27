@@ -2,9 +2,10 @@
 import courses from '../../data/cursos.json';
 import Site from '../../layouts/Site.astro';
 import {marked} from 'marked';
+import { deadlineList } from '../../lib/calendar.js';
 export function getStaticPaths(){return courses.map(c=>({params:{slug:c.slug},props:{c}}))}
 const {c}=Astro.props;
-const sections = c.body.split(/(?=^### )/m);
+const sections = c.body.replace('<!-- plazos-inscripcion -->', deadlineList(c)).split(/(?=^### )/m);
 const body = sections.map(section => {
   if (section.startsWith('### Programa')) {
     section = section.replace(/(?:^\d+\. \*\*[^*]+\*\* .+\n?)+/m, block => block.trimEnd().split('\n').map(line => {
@@ -30,7 +31,9 @@ const price = c.facts.find(fact => fact.includes('€'));
         <p>{c.facts.join(' · ')}</p>
         <a class="button" href="#acceso">Ver acceso y plazos</a>
         {alertsEnabled && <a class="download" href={alertsHref}>Solicitar aviso de matrícula</a>}
-        <a class="download" href={'../../calendario/'+c.slug+'.ics'} download>Guardar fechas en mi calendario</a>
+        <a class="download" href={'../../calendario/'+c.slug+'.ics'} download>Guardar fechas del curso (.ics)</a>
+        <a class="download" href={'../../calendario/'+c.slug+'-inscripcion.ics'} download>Guardar plazos de inscripción (.ics)</a>
+        <a class="download" href="../../#suscripcion-calendario">Suscribirme al calendario de Praxis</a>
         <details><summary>Credencial universitaria</summary><p>{c.credential}</p></details>
       </aside>
       <div class="program" set:html={body}/>

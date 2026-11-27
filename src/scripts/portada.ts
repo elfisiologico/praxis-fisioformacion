@@ -81,3 +81,20 @@ if (form && confirmation) {
     }
   });
 }
+
+const copyCalendar = document.querySelector<HTMLButtonElement>('[data-calendar-copy]');
+const calendarUrl = document.querySelector<HTMLInputElement>('#calendar-url');
+const calendarCopyStatus = document.querySelector('#calendar-copy-status');
+
+if (copyCalendar && calendarUrl && calendarCopyStatus && navigator.clipboard) {
+  copyCalendar.hidden = false;
+  copyCalendar.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(calendarUrl.value);
+      calendarCopyStatus.textContent = 'Enlace copiado.';
+    } catch {
+      calendarUrl.select();
+      calendarCopyStatus.textContent = 'Enlace seleccionado. Puedes copiarlo manualmente.';
+    }
+  });
+}
