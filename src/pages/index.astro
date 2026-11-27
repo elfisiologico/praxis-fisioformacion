@@ -3,7 +3,7 @@ import Site from '../layouts/Site.astro';
 import courses from '../data/cursos.json';
 const url=(c)=>'cursos/'+c.slug+'/';
 const next=courses.find(c=>c.end>=new Date().toISOString().slice(0,10));
-const guide=[{c:courses[0],label:'Básico e intermedio',text:'Manejo del ecógrafo y exploración sistemática de las extremidades.'},{c:courses[3],label:'Nivel III',text:'Sigue el recorrido de los nervios con la sonda y observa cómo cambian la pared abdominal y la región inguinal cuando el paciente se mueve.'},{c:courses[4],label:'Neuroeje',text:'Exploración de la articulación temporomandibular, la columna y la región sacropélvica.'}];
+const guide=[{c:courses[0],label:'Básico e intermedio',text:'Manejo del ecógrafo y exploración sistemática de las extremidades.'},{c:courses[3],label:'Nivel III',text:'Sigue el recorrido de los nervios con la sonda y observa cómo cambian la pared abdominal y la región inguinal cuando el paciente se mueve.'},{c:courses[4],label:'Neuroeje y complejo craneomandibular',text:'Exploración de la articulación temporomandibular, la columna y la región sacropélvica.'}];
 ---
 <Site title="Formación universitaria para la práctica clínica" description="Formación de fisioterapia en Málaga. Consulta los programas, compara niveles de ecografía y revisa requisitos y fechas de la Universidad de Málaga.">
   <section class="hero">
