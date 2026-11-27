@@ -5,7 +5,7 @@ const {title,description,preview="portada"}=Astro.props;
 const base=import.meta.env.BASE_URL.replace(/\/$/,'')+'/';
 const canonical=new URL(Astro.url.pathname,Astro.site);
 ---
-<!doctype html><html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title} · Praxis Fisioformación</title><meta name="description" content={description}/><link rel="canonical" href={canonical}/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={canonical}/><meta property="og:image" content={new URL(base+'media/'+preview+'.png',Astro.site)}/><link rel="icon" href={base+'media/praxis.png'}/></head><body><a class="skip" href="#principal">Saltar al contenido</a><header>
+<!doctype html><html lang="es"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>{title} · Praxis Fisioformación</title><meta name="description" content={description}/><link rel="canonical" href={canonical}/><meta property="og:title" content={title}/><meta property="og:description" content={description}/><meta property="og:type" content="website"/><meta property="og:url" content={canonical}/><meta property="og:image" content={new URL(base+'media/'+preview+'.png',Astro.site)}/><link rel="icon" href={base+'media/praxis.png'}/></head><body><div class="reading-progress" aria-hidden="true"></div><a class="skip" href="#principal">Saltar al contenido</a><header>
   <a class="brand" href={base}><img src={base+'media/logo-corporativo-color.png'} class="corporate-logo" width="1000" height="1000" alt="Praxis Fisioformación, inicio"/></a>
   <nav class="wide-nav" aria-label="Principal"><a href={base+'#calendario'}>Calendario</a><a href={base+'#ecografia'}>Itinerario de ecografía</a><a href={base+'#equipo'}>Equipo docente</a></nav>
   <details class="mobile-menu">
@@ -15,6 +15,16 @@ const canonical=new URL(Astro.url.pathname,Astro.site);
 </header><main id="principal"><slot/></main><footer><a href={base}><img src={base+'media/logo-corporativo-color.png'} class="corporate-logo" width="1000" height="1000" alt="Praxis Fisioformación, inicio"/></a><a href={base+'#calendario'}>Calendario de formación</a></footer></body></html>
 
 <script>
+  const progress = document.querySelector<HTMLElement>('.reading-progress');
+  const updateProgress = () => {
+    const available = document.documentElement.scrollHeight - window.innerHeight;
+    progress?.style.setProperty('--progress', String(available > 0 ? Math.min(1, Math.max(0, window.scrollY / available)) : 0));
+  };
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  window.addEventListener('resize', updateProgress);
+  new ResizeObserver(updateProgress).observe(document.body);
+  updateProgress();
+
   const menu = document.querySelector<HTMLDetailsElement>('.mobile-menu');
   menu?.addEventListener('click', event => {
     if (event.target instanceof Element && event.target.closest('a')) menu.open = false;

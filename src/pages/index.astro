@@ -16,28 +16,31 @@ const guide = [
     course: courses[0],
     level: 'Niveles I y II',
     label: 'Básico e intermedio',
+    prompt: 'Quiero ganar soltura con la sonda',
     text: 'Gana autonomía con la sonda. Aprende a optimizar la imagen y a explorar de forma sistemática el miembro superior e inferior con supervisión docente.',
   },
   {
     course: courses[3],
     level: 'Nivel III',
     label: 'Avanzado',
+    prompt: 'Ya exploro estructuras básicas',
     text: 'Si ya manejas la exploración básica, sigue el recorrido de los nervios con la sonda y observa qué cambia en la pared abdominal y la región inguinal con el movimiento.',
   },
   {
     course: courses[4],
     level: 'Nivel IV',
     label: 'Neuroeje y complejo craneomandibular',
+    prompt: 'Busco neuroeje y ATM',
     text: 'Amplía tu exploración ecográfica a la articulación temporomandibular, el raquis y la región sacropélvica.',
   },
 ];
 
 const agenda = [
-  { title: 'Ecografía musculoesquelética · Niveles I y II', benefit: 'Gana soltura con el ecógrafo y practica la exploración sistemática de las extremidades.' },
-  { title: 'Neuromodulación percutánea sin ecoguía', benefit: 'Aplica la anatomía y el razonamiento clínico al abordaje del sistema nervioso periférico.' },
-  { title: 'Restricción de flujo sanguíneo (BFR)', benefit: 'Practica la medición de la presión de oclusión y valora el uso del BFR en distintos contextos de rehabilitación.', mode: 'Semipresencial' },
-  { title: 'Ecografía avanzada · Nivel III', benefit: 'Rastrea trayectos nerviosos complejos y explora la pared abdominal y la región inguinal en movimiento.' },
-  { title: 'Ecografía del neuroeje · Nivel IV', benefit: 'Practica la exploración ecográfica del complejo craneomandibular, la columna y la región sacropélvica.' },
+  { category: 'ecografia', title: 'Ecografía musculoesquelética · Niveles I y II', benefit: 'Gana soltura con el ecógrafo y practica la exploración sistemática de las extremidades.' },
+  { category: 'invasiva', title: 'Neuromodulación percutánea sin ecoguía', benefit: 'Aplica la anatomía y el razonamiento clínico al abordaje del sistema nervioso periférico.' },
+  { category: 'bfr', title: 'Restricción de flujo sanguíneo (BFR)', benefit: 'Practica la medición de la presión de oclusión y valora el uso del BFR en distintos contextos de rehabilitación.', mode: 'Semipresencial' },
+  { category: 'ecografia', title: 'Ecografía avanzada · Nivel III', benefit: 'Rastrea trayectos nerviosos complejos y explora la pared abdominal y la región inguinal en movimiento.' },
+  { category: 'ecografia', title: 'Ecografía del neuroeje · Nivel IV', benefit: 'Practica la exploración ecográfica del complejo craneomandibular, la columna y la región sacropélvica.' },
 ];
 ---
 
@@ -54,7 +57,7 @@ const agenda = [
     </div>
     {next && <a class="feature" href={url(next)}>
       <div class="scan" aria-hidden="true"><i></i><b></b></div>
-      <small>{nextIndex + 1}.ª convocatoria de 2027 · Plazas limitadas</small>
+      <small class="feature-label"><span class="pulse" aria-hidden="true"></span>{nextIndex + 1}.ª convocatoria de 2027 · Plazas limitadas</small>
       <div class="feature-info">
         <div class="stamp">{next.days} <span>{next.month} 2027</span></div>
         <div class="feature-name">{agenda[nextIndex].title}</div>
@@ -64,30 +67,40 @@ const agenda = [
 
   <section id="calendario">
     <div class="section-head"><h2>Calendario 2027</h2><p>Facultad de Ciencias de la Salud · Málaga</p></div>
-    <div class="agenda">{courses.map((course, index) => <a href={url(course)}>
+    <div class="agenda-filters" role="group" aria-label="Filtrar cursos por categoría" hidden>
+      {Object.entries({ todas: 'Todas', ecografia: 'Ecografía', invasiva: 'Invasiva', bfr: 'BFR' }).map(([category, label]) =>
+        <button type="button" data-filter={category} aria-pressed={category === 'todas'}>{label}</button>
+      )}
+    </div>
+    <p class="sr-only" id="agenda-status" role="status"></p>
+    <div class="agenda">{courses.map((course, index) => <a href={url(course)} data-category={agenda[index].category}>
       <div class="date">{course.days}<small>{course.month}</small></div>
       <div class="entry">
         <h3>{agenda[index].title}</h3>
         <p>{agenda[index].benefit}</p>
         <span>{agenda[index].mode ?? course.mode}</span>
       </div>
-      <span class="price">{course.price} <small>previstos</small></span>
+      <div class="agenda-end"><span class="price">{course.price} <small>previstos</small></span><span class="agenda-link">Ver ficha</span></div>
     </a>)}</div>
   </section>
 
   <section id="ecografia">
     <h2>Itinerario de ecografía UMA</h2>
     <p class="section-intro">Elige tu punto de partida según tu experiencia con la sonda.</p>
-    <div class="guide">{guide.map(({ course, level, label, text }) => <article>
-      <p class="level">{level} · {course.month}</p>
-      <h3>{label}</h3>
-      <p>{text}</p>
-      <a href={url(course)} aria-label={'Ver programa y requisitos de ' + label}>Ver programa y requisitos</a>
-    </article>)}</div>
+    <div class="guide journey">{guide.map(({ course, level, label, prompt, text }, index) => <details name="nivel-ecografia" open={index === 0}>
+      <summary><span class="journey-point" aria-hidden="true"></span><span><small>{level} · {course.month}</small><strong>{prompt}</strong></span></summary>
+      <div class="journey-content">
+        <h3>{label}</h3>
+        <p>{text}</p>
+        <p><strong>Requisitos</strong> · {course.body.match(/### Acceso y matrícula\s+([^\n]+)/)?.[1]}</p>
+        <a href={url(course)} aria-label={'Ver programa y requisitos de ' + label}>Ver programa y requisitos</a>
+        <a href={url(course) + '#acceso'}>Consultar acceso</a>
+      </div>
+    </details>)}</div>
   </section>
 
   <section id="metodologia">
-    <p class="location">Metodología</p>
+    <p class="location">Metodología · <span data-count={courses.length}>{courses.length}</span> formaciones en 2027</p>
     <h2>Aprender haciendo, del fundamento científico a la camilla</h2>
     <div class="editorial-grid">
       <article><h3>Práctica supervisada en el aula</h3><p>Practica exploración, manejo del equipo o razonamiento sobre casos, según el programa, con la orientación del equipo docente.</p></article>
@@ -119,7 +132,7 @@ const agenda = [
         ? 'Déjanos tu correo y te avisaremos cuando se habilite la matrícula en la Universidad de Málaga.'
         : 'Comprueba el estado de inscripción en el portal de la Universidad de Málaga. En cada ficha encontrarás el código del curso y sus plazos previstos.'}</p>
     </div>
-    {alertsEnabled ? <form method="post" action={alertEndpoint}>
+    {alertsEnabled ? <form method="post" action={alertEndpoint} id="enrollment-alert">
       <label for="alert-email">Tu correo electrónico</label>
       <input id="alert-email" name="email" type="email" autocomplete="email" required />
       <label for="alert-profile">Tu perfil</label>
@@ -131,6 +144,12 @@ const agenda = [
       </select>
       <p><a href={privacyUrl}>Información sobre el uso de tus datos</a></p>
       <button type="submit" class="button">Recibir aviso de matrícula</button>
+      <p class="form-error" role="alert"></p>
     </form> : <a class="button" href={enrollmentPortal}>Consultar en la UMA</a>}
+    {alertsEnabled && <p id="alert-confirmation" tabindex="-1" hidden>Solicitud recibida. Te avisaremos por correo cuando se habilite la matrícula.</p>}
   </section>
 </Site>
+
+<script>
+  import '../scripts/portada';
+</script>
