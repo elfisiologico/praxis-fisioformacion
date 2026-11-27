@@ -18,7 +18,6 @@ footer .corporate-logo {width:220px;height:64px}
 .wide-nav {gap:clamp(18px,3vw,48px)}
 nav a,summary,.back,.download,.guide a {display:inline-flex;align-items:center;min-height:44px;font-weight:700}
 nav a {text-decoration:none}
-nav a:hover,.agenda a:hover h3,.feature:hover .feature-name {text-decoration:underline}
 .mobile-menu {display:none}
 summary {cursor:pointer}
 main>section {padding-block:clamp(38px,6vw,88px)}
@@ -33,7 +32,6 @@ p,li {line-height:1.6}
 .location span {margin-inline:.45em;color:#915230}
 .lead {font-size:clamp(1rem,1.4vw,1.22rem);max-width:52ch;margin-block:1.25rem 1.6rem}
 .button {display:inline-flex;gap:1.5em;min-height:48px;background:var(--accent);color:var(--ink);padding:.7em 1.15em;text-decoration:none;font-weight:750;border-radius:3px}
-.button:hover {box-shadow:inset 0 0 0 2px var(--ink)}
 .feature {position:relative;isolation:isolate;overflow:hidden;min-height:clamp(310px,31vw,430px);background:var(--ink);color:var(--paper);display:flex;flex-direction:column;justify-content:space-between;padding:clamp(22px,3vw,40px);text-decoration:none}
 .feature>small {font-weight:650;font-size:.88rem}
 .scan {position:absolute;z-index:-1;right:-8%;top:-34%;width:85%;aspect-ratio:1;opacity:.85;transform:rotate(18deg);border-radius:50%;background:repeating-radial-gradient(circle at center,transparent 0 15px,#facd935c 16px,transparent 17px 24px);clip-path:polygon(50% 50%,100% 0,100% 100%,0 100%)}
@@ -47,7 +45,6 @@ p,li {line-height:1.6}
 .section-head p,.entry span,.price small,.date small {font-size:.9rem}
 .agenda a {display:grid;grid-template-columns:minmax(90px,.55fr) minmax(0,3fr) auto auto;align-items:center;gap:clamp(12px,3vw,48px);padding:1.15rem 0;border-top:1px solid var(--line);text-decoration:none}
 .agenda a:last-child {border-bottom:1px solid var(--line)}
-.agenda a:hover {background:#fff9ee}
 .date {font-size:clamp(1.4rem,2.4vw,2rem);font-weight:750;letter-spacing:-.04em;line-height:1.2}
 .date small,.price small {display:block;font-weight:500;letter-spacing:0}
 .entry span {display:block;margin-top:.4rem}
@@ -121,6 +118,50 @@ footer a {display:inline-flex;align-items:center;min-height:44px}
   .coursegrid {margin-top:1.2rem}
   .course h1 {font-size:clamp(1.9rem,7.4vw,2.9rem);max-width:100%}
 }
+/* Feedback for touch and keyboard stays legible without motion. */
+nav a:focus-visible,.agenda a:focus-visible h3,.feature:focus-visible .feature-name {
+  text-decoration:underline;
+}
+.agenda a:is(:focus-visible,:active) {background:#fff9ee}
+.button:is(:focus-visible,:active) {box-shadow:inset 0 0 0 2px var(--ink)}
+
+@media (hover:hover) and (pointer:fine) {
+  nav a:hover,.agenda a:hover h3,.feature:hover .feature-name {text-decoration:underline}
+  .button:hover {box-shadow:inset 0 0 0 2px var(--ink)}
+  .agenda a:hover {background:#fff9ee}
+  .guide article:hover {border-top-color:var(--accent)}
+}
+
+@media (hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference) {
+  .feature,.agenda a,.button,.guide article {transition:background-color 220ms ease,box-shadow 220ms ease,border-color 220ms ease}
+  .scan {transition:transform 520ms cubic-bezier(.2,.75,.25,1),opacity 320ms ease}
+  .feature .stamp,.feature-name span,.agenda .entry,.agenda .arrow,.button span,.guide a span {
+    transition:transform 240ms cubic-bezier(.2,.75,.25,1);
+  }
+  .feature-name span,.guide a span,.button span {display:inline-block}
+  .feature {transform:translateY(0);transition-property:transform,box-shadow,background-color}
+  .feature:hover {transform:translateY(-4px);box-shadow:0 14px 28px #16232b26;background-color:#20333d}
+  .feature:hover .scan {transform:rotate(29deg) scale(1.14);opacity:1}
+  .feature:hover .stamp {transform:translateY(-4px)}
+  .feature:hover .feature-name span,.agenda a:hover .arrow,.guide a:hover span {transform:translate(3px,-3px)}
+  .agenda a:hover .entry {transform:translateX(6px)}
+  .agenda a:hover {box-shadow:inset 3px 0 var(--accent)}
+  .button:hover span {transform:translateY(3px)}
+  .wide-nav a {position:relative}
+  .wide-nav a::after {
+    content:"";
+    position:absolute;
+    inset:auto 0 7px;
+    height:2px;
+    background:currentColor;
+    transform:scaleX(0);
+    transform-origin:left;
+    transition:transform 200ms ease;
+  }
+  .wide-nav a:hover {text-decoration:none}
+  .wide-nav a:hover::after {transform:scaleX(1)}
+}
+
 @media print {
   header,footer,.button,.skip,.back,.download {display:none}
   .coursegrid {display:block}
